@@ -1,0 +1,9 @@
+Flask
+Flask-RESTful
+Flask-JWT
+Flask-MySQL
+Flask-SQLAlchemy
+flask-migrate
+PyMySQL
+Werkzeug
+python-dotenv
