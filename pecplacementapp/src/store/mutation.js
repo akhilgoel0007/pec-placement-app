@@ -1,9 +1,3 @@
-export const MUTATION = (state, Data) => {
-    // state manipulation
-    console.log(state);
-    console.log(Data);
-}
-
 export const REGISTER = (state, Data) => {
     state.firstName = Data['first_name'];
     state.lastName = Data['last_name'];
@@ -118,4 +112,13 @@ export const UPDATE_PROFILE = (state, Data) => {
         state.marksheet12 = Data["marksheet_12"];
     }
 
+}
+
+export const STORE_ALL_JOB_OPENINGS = (state, Data) => {
+    state.jobOpenings = Data['all_job_opening'];
+}
+
+export const STORE_JOB_OPENING = (state, Data) => {
+    console.log(Data);
+    state.currentJobOpening = Data['job_opening'];
 }

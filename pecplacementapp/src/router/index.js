@@ -25,7 +25,7 @@ const routes = [
     component: Dashboard,
     children: [
       { path: '/', component: MyProfile },
-      { path: '/jobview', component: JobView },
+      { path: '/jobview', props: true, component: JobView },
       { path: '/jobentry', component: JobEntry },
       { path: '/account', component: MyAccount },
       { path: '/jobprofiles', component: JobProfiles },

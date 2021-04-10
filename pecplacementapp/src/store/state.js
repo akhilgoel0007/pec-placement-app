@@ -50,5 +50,8 @@ export default {
         "4 Months",
         "6 Months",
         "12 Months"
-    ]
+    ],
+
+    jobOpenings: null,
+    currentJobOpening: null,
 }

@@ -21,6 +21,16 @@
                     </div>
                 </div>
 
+                <!-- Company Name -->
+                <div class="input-field-wrapper display-flex flex-row">
+                    <div class="input-heading display-flex centerY">
+                        Company Name:
+                    </div>
+                    <div class="input-content">
+                        <v-text-field v-model="companyName" label="Company Name"></v-text-field>
+                    </div>
+                </div>
+
                 <!-- Job Type -->
                 <div class="input-field-wrapper display-flex flex-row">
                     <div class="input-heading display-flex centerY">
@@ -143,6 +153,31 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Backlogs requirement BARRIER -->
+                <div class="input-field-wrapper display-flex flex-row">
+                    <div class="input-heading display-flex centerY">
+                        Allow Backlogs:
+                    </div>
+                    <div class="input-content display-flex flex-row">
+                        <div class="criteria-choice">
+                            <v-radio-group v-model="backlogAllowed" row>
+                                <v-radio label="Yes" value="true"></v-radio>
+                                <v-radio label="No" value="false"></v-radio>
+                            </v-radio-group>
+                        </div>
+                        <div class="criteria-choice-input" v-if="backlogAllowed === 'true'">
+                            <div class="display-flex flex-row" style="width: 100%;">
+                                <div class="criteria-input-heading display-flex centerY">
+                                    Maximum Backlogs:
+                                </div>
+                                <div class="criteria-input-content">
+                                    <v-text-field v-model="maxBacklogs" label="Minimum Required CG"></v-text-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Application Opening Date -->
                 <div class="input-field-wrapper display-flex flex-row mb-6 mt-4">
@@ -175,7 +210,7 @@
                 </div>
             </v-card-text>
             <v-card-actions class="px-12 pb-10">
-                <v-btn @click="createOpening()" class="ma-2 white--text" color="success">
+                <v-btn :disabled="!allowToCreateOpening" @click="createOpening()" class="ma-2 white--text" color="success">
                     <v-icon class="mr-4 ml-2" dark>mdi-briefcase-plus</v-icon>
                     Create Opening
                 </v-btn>
@@ -200,8 +235,11 @@ export default {
             duration: null,
             cgRequired: null,
             profileName: null,
+            companyName: null,
+            maxBacklogs: null,
             classification: null,
             jobDescription: null,
+            backlogAllowed: null,
             min10Percentage: null,
             min12Percentage: null,
             applicationOpenDate: null,
@@ -219,6 +257,9 @@ export default {
             this.duration = null;
             this.cgRequired = null;
             this.profileName = null;
+            this.companyName = null;
+            this.maxBacklogs = null;
+            this.backlogAllowed = null;
             this.classification = null;
             this.jobDescription = null;
             this.min10Percentage = null;
@@ -233,16 +274,62 @@ export default {
             var payload = {};
             
             this.$store.dispatch("CreateOpening", payload);
-        }
+        },
+
+        checkValue(condition, value) {
+            if(condition === 'true') {
+                if(value) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if(condition === 'false') {
+                return true;
+            } else {
+                return false;
+            }
+        },
     },
 
     computed: {
         ...mapGetters({
             durationOptions: "getDurationOptions",
-        })
+        }),
+
+        allowToCreateOpening() {
+            if(this.profileName && this.companyName && this.jobDescription && this.applicationCloseDate && this.applicationOpenDate) {
+                if(this.classification === "Internship") {
+                    if(this.stipend && this.duration) {
+                        console.log( this.checkValue(this.backlogAllowed, this.maxBacklogs));
+                        if(this.checkValue(this.cgRequired, this.minCG) && this.checkValue(this.backlogAllowed, this.maxBacklogs) && this.checkValue(this.percentage12Required, this.min12Percentage) && this.checkValue(this.percentage10Required, this.min10Percentage)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else if(this.classification === "FullTime") {
+                    if(this.ctc) {
+                        if(this.checkValue(this.cgRequired, this.minCG) && this.checkValue(this.backlogAllowed, this.maxBacklogs) && this.checkValue(this.percentage12Required, this.min12Percentage) && this.checkValue(this.percentage10Required, this.min10Percentage)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        },
     }
 }
 </script>
+
 <style scoped>
 .input-field-wrapper {
     width: 100%;

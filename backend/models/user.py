@@ -3,7 +3,7 @@ from flask_restful import Resource, reqparse
 
 
 class User:
-    def __init__(self, _id, first_name, last_name, email, password, date_of_birth=None, gender=None, linkedin_url=None, github_url=None, phone_number=None, address=None, admin=False, student_id=None, batch=None, branch=None, semester=None, current_cg=None, total_backlogs=None, cg_marksheet=None, school_name_12=None, percentage_12=None, marksheet_12=None, school_name_10=None, percentage_10=None, marksheet_10=None):
+    def __init__(self, _id, first_name, last_name, email, password, is_active=None, date_of_birth=None, gender=None, linkedin_url=None, github_url=None, phone_number=None, address=None, admin=False, student_id=None, batch=None, branch=None, semester=None, current_cg=None, total_backlogs=None, cg_marksheet=None, school_name_12=None, percentage_12=None, marksheet_12=None, school_name_10=None, percentage_10=None, marksheet_10=None):
         self.id = _id
         self.email = email
         self.admin = admin
@@ -14,6 +14,7 @@ class User:
         self.semester = semester
         self.password = password
         self.last_name = last_name
+        self.is_active = is_active
         self.first_name = first_name
         self.current_cg = current_cg
         self.student_id = student_id
@@ -60,7 +61,8 @@ class User:
                             "marksheet_12 TEXT," \
                             "school_name_10 TEXT," \
                             "percentage_10 TEXT," \
-                            "marksheet_10 TEXT" \
+                            "marksheet_10 TEXT," \
+                            "is_active BOOLEAN DEFAULT TRUE" \
                             ");"
 
         cursor.execute(create_user_table)
@@ -149,6 +151,7 @@ class UserModification(Resource):
     parser.add_argument("phone_number", type=str, required=False)
     parser.add_argument("address", type=str, required=False)
     parser.add_argument("admin", type=bool, required=False)
+    parser.add_argument("is_active", type=bool, required=False)
     parser.add_argument("student_id", type=str, required=False)
     parser.add_argument("batch", type=str, required=False)
     parser.add_argument("branch", type=str, required=False)
@@ -190,8 +193,10 @@ class UserModification(Resource):
                 response = self.add_response(response, self.update(user_id, 'phone_number', data['phone_number']), "phone_number")
             if data['address']:
                 response = self.add_response(response, self.update(user_id, 'address', data['address']), "address")
-            if data['admin']:
+            if data['admin'] == False or data['is_active'] == True:
                 response = self.add_response(response, self.update(user_id, 'admin', data['admin']), "admin")
+            if data['is_active'] == False or data['is_active'] == True:
+                response = self.add_response(response, self.update(user_id, 'is_active', data['is_active']), "is_active")
             if data['student_id']:
                 response = self.add_response(response, self.update(user_id, 'student_id', data['student_id']), "student_id")
             if data['batch']:
@@ -227,7 +232,7 @@ class UserModification(Resource):
         connection = mysql.connect()
         cursor = connection.cursor()
 
-        if field not in ['admin', 'current_cg', 'total_backlogs']:
+        if field not in ['is_active', 'admin', 'current_cg', 'total_backlogs']:
             cursor.execute(f"UPDATE users SET {field}='{field_value}' WHERE id={user_id}")
         elif field == 'current_cg':
             cursor.execute(f"UPDATE users SET current_cg={field_value} WHERE id={user_id}")
@@ -235,6 +240,8 @@ class UserModification(Resource):
             cursor.execute(f"UPDATE users SET total_backlogs={field_value} WHERE id={user_id}")
         elif field == 'admin':
             cursor.execute(f"UPDATE users SET admin={field_value} WHERE id={user_id}")
+        elif field == 'is_active':
+            cursor.execute(f"UPDATE users SET is_active={field_value} WHERE id={user_id}")
         else:
             connection.commit()
             connection.close()
@@ -277,6 +284,7 @@ class UserData(Resource):
             "school_name_10": user[22],
             "percentage_10": user[23],
             "marksheet_10": user[24],
+            "is_active": user[25]
         }
 
     def get(self):
@@ -293,7 +301,7 @@ class UserDataList(Resource):
 
     @staticmethod
     def get():
-        users = User(None, None, None, None, None, None, None, None, None).find_all_users()
+        users = User(None, None, None, None, None, None, None, None, None, None).find_all_users()
 
         all_users = []
 

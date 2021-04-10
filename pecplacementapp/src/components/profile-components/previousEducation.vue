@@ -96,7 +96,7 @@
                 </v-row>
             </div>
         </v-card-text>
-        <v-card-actions class="px-8 pb-5">
+        <v-card-actions v-if="updateRequired" class="px-8 pb-5">
             <v-btn class="ma-2" color="info" @click="update()">Update</v-btn>
         </v-card-actions>
     </v-card>
@@ -159,7 +159,11 @@ export default {
             schoolName12:"getSchoolName12",
             percentage12: "getPercentage12",
             marksheet12: "getMarksheet12",
-        })
+        }),
+
+        updateRequired() {
+            return (!this.schoolName10 || !this.percentage10 || !this.marksheet10 || !this.schoolName12 || !this.percentage12 || this.marksheet12)?true:false;
+        }
     }
 }
 

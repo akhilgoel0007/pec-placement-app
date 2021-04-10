@@ -14,11 +14,12 @@
                 </div>
                 <div class="listing-content display-flex flex-column">
                     <JobRow
-                        v-for="(job, index) in jobOpenings"
-                        :key="index"
-                        :companyIcon="job.companyIcon"
-                        :profileName="job.profileName"
-                        :companyName="job.companyName"
+                        v-for="job in jobOpenings"
+                        :key="job.id"
+                        :jobID="job.id"
+                        :companyIcon="job.company_icon"
+                        :profileName="job.profile_name"
+                        :companyName="job.company_name"
                         :location="job.location"
                         :status="job.status"
                     />
@@ -28,6 +29,7 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import JobRow from "../../components/jobProfile-components/jobRow";
 
 export default {
@@ -35,27 +37,21 @@ export default {
     components: { JobRow },
     data() {
         return {
-            jobOpenings: [
-                {
-                    "companyIcon": null,
-                    "profileName": "Marketing And Business Development",
-                    "companyName": "Embeddded Control Systems",
-                    "location": "Remote",
-                    "status": true
-                },
-                {
-                    "companyIcon": null,
-                    "profileName": "Business Development Trainee",
-                    "companyName": "Tenerife Innovations Private Limited",
-                    "location": "Noida & Gurgaon",
-                    "status": false
-                }
-            ]
+            //
         }
     },
 
     methods: {
-        
+    },
+
+    computed: {
+        ...mapGetters({
+            jobOpenings: "getAllJobOpenings"
+        }),
+    },
+
+    mounted() {
+        this.$store.dispatch("FetchJobOpenings");
     }
 }
 

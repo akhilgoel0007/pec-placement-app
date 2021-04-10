@@ -26,7 +26,7 @@
                 </v-col>
             </v-row>
         </v-card-text>
-        <v-card-actions class="px-8 pb-5">
+        <v-card-actions v-if="updateRequired" class="px-8 pb-5">
             <v-btn class="ma-2" color="info" @click="update()">Update</v-btn>
         </v-card-actions>
     </v-card>
@@ -65,7 +65,11 @@ export default {
         ...mapGetters({
             github: "getGithub",
             linkedIn: "getLinkedIn"
-        })
+        }),
+
+        updateRequired() {
+            return (!this.github || !this.linkedIn)?true:false;
+        }
     }
 }
 

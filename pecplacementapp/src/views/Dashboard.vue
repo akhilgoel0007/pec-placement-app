@@ -8,7 +8,7 @@
                     </router-link>
                 </span>
                 <span class="mx-4 mt-1 mb-1">
-                    <router-link to="/" class="white--text" style="text-decoration: none;">
+                    <router-link to="/dashboard" class="white--text" style="text-decoration: none;">
                         MY PROFILE
                     </router-link>
                 </span>

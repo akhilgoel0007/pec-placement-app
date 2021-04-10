@@ -11,7 +11,7 @@ export const LoginUser = ({ commit }, payload) => {
         }
     })
     .catch(error => {
-        console.log(`Login Error: ${error}`);
+        console.log(`Login error: ${error}`);
     })
 }
 
@@ -24,7 +24,7 @@ export const SignUpUser = ({ commit }, payload) => {
         }
     })
     .catch(error => {
-        console.log(`Sign up Error: ${error}`);
+        console.log(`Sign up error: ${error}`);
     })
 }
 
@@ -38,6 +38,33 @@ export const updateProfile = ({ commit, getters }, payload) => {
         }
     })
     .catch(error => {
-        console.log(`Update Profile Error: ${error}`);
+        console.log(`Update Profile error: ${error}`);
+    })
+}
+
+export const FetchJobOpenings = ({ commit }) => {
+    axios.get("http://localhost:5000/alljobs")
+    .then(Response => {
+        if(Response.status === 200) {
+            commit("STORE_ALL_JOB_OPENINGS", Response.data);
+        }
+    })
+    .catch(error => {
+        console.log(`Fetch job openings error: ${error}`);
+    })
+}
+
+export const ShowJobOpening = ({ commit }, payload) => {
+    axios.get("http://localhost:5000/job", {params: payload})
+    .then(Response => {
+        if(Response.status === 200) {
+            commit("STORE_JOB_OPENING", Response.data);
+        }
+    })
+    .then(() => {
+        router.push('/jobview');
+    })
+    .catch(error => {
+        console.log(`Show job opening error: ${error}`);
     })
 }

@@ -43,7 +43,7 @@
                 </v-col>
             </v-row>
         </v-card-text>
-        <v-card-actions class="px-8 pb-5">
+        <v-card-actions v-if="updateRequired" class="px-8 pb-5">
             <v-btn class="ma-2" color="info" @click="update()">Update</v-btn>
         </v-card-actions>
     </v-card>
@@ -96,7 +96,11 @@ export default {
             studentID: "getStudentID",
             branchOptions: "getBranchOptions",
             semesterOptions: "getSemesterOptions",
-        })
+        }),
+
+        updateRequired() {
+            return (!this.batch || !this.branch || !this.semester || !this.studentID)?true:false;
+        }
     }
 }
 

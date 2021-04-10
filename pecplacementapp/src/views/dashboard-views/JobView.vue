@@ -9,29 +9,32 @@
                         </v-icon>
                     </v-avatar>
                 </div>
-                <div class="profile-name mx-4 mt-5 mb-4 display-flex centerX">Marketing And Business Development</div>
-                <div class="company-name ma-2 display-flex centerX">Embeddded Control Systems</div>
-                <div class="location ma-1 display-flex centerX">Remote</div>
+                <div class="profile-name mx-4 mt-5 mb-4 display-flex centerX">{{ jobOpening.profile_name }}</div>
+                <div class="company-name ma-2 display-flex centerX">{{ jobOpening.company_name }}</div>
+                <div class="location ma-1 display-flex centerX">{{ jobOpening.location }}</div>
             </v-card>
             <v-card tile min-height="400" width="60%" class="ma-3">
                 <v-card-title class="ml-2">Opening Overview</v-card-title>
                 <center><hr style="width: 95%;"></center>
                 <div class="category display-flex flex-row">
                     <div class="category-heading">Category</div>
-                    <div class="category-content">6 month / 1 year Internship</div>
+                    <div class="category-content">{{ jobOpening.offer_type }}</div>
+                </div>
+                <div class="compensation display-flex flex-row">
+                    <div class="compensation-heading">Stipend</div>
+                    <div class="compensation-content">{{ jobOpening.stipend }}</div>
                 </div>
                 <div class="compensation display-flex flex-row">
                     <div class="compensation-heading">CTC</div>
-                    <div class="compensation-content">₹  10,000.00 - ₹  15,000.00 per Month</div>
+                    <div class="compensation-content">{{ jobOpening.ctc }}</div>
                 </div>
-                <div></div>
             </v-card>
         </div>
         <div class="other-info">
             <v-card tile min-height="400" class="ma-3">
                 <v-card-title class="ml-2">Job Description</v-card-title>
                 <center><hr style="width: 98%;"></center>
-                <v-card-text class="px-5 pt-4 pb-4">Job Description goes here</v-card-text>
+                <v-card-text class="px-5 pt-4 pb-4">{{ jobOpening.job_description }}</v-card-text>
 
                 <v-card-title class="ml-2 mt-10">Eligibility Criteria & Evaluation Result</v-card-title>
                 <center><hr style="width: 98%;"></center>
@@ -63,12 +66,13 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
     name: "jobView",
     data() {
         return {
-
+            //
         }
     },
 
@@ -77,10 +81,19 @@ export default {
     },
 
     computed: {
+        ...mapGetters({
+            jobOpening: "getCurrentJobOpening",
+        }),
+
         checkEligibility() {
             return false;
         }
-    }
+    },
+
+    // mounted() {
+    //     this.$store.dispatch('ShowJobOpening', { id: this.id });
+    //     console.log(`Job id is: ${this.id}`);
+    // }
 }
 
 </script>

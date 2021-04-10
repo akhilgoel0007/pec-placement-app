@@ -1,5 +1,5 @@
 <template>
-    <div class="content display-flex flex-row">
+    <div class="content display-flex flex-row" @click="showJobOpening()">
         <div class="display-flex centerX centerY company-icon pt-4 pb-4" style="width: 7%;">
             <v-avatar size="40" color="#E0E0E0">
                 <v-icon>mdi-account</v-icon>
@@ -22,17 +22,28 @@
                 <v-icon color="#212121" size="20">mdi-lock</v-icon>
             </v-avatar>
         </div>
-    </div>    
+    </div>
 </template>
 
 <script>
 export default {
     props: {
-        companyIcon: { type: String, default: null },
+        jobID: { type: Number },
+        location: { type: String },
         profileName: { type: String },
         companyName: { type: String },
-        location: { type: String },
         status: { type: Boolean, default: true },
+        companyIcon: { type: String, default: null },
+    },
+
+    methods: {
+        showJobOpening() {
+            var payload = {
+                id: this.jobID
+            };
+            
+            this.$store.dispatch('ShowJobOpening', payload);
+        }
     }
 }
 </script>

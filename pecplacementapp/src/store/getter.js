@@ -101,3 +101,11 @@ export const getBacklogs = (state) => {
 export const getMarksheet = (state) => {
     return state.marksheet;
 }
+
+export const getAllJobOpenings = (state) => {
+    return state.jobOpenings;
+}
+
+export const getCurrentJobOpening = (state) => {
+    return state.currentJobOpening;
+}
