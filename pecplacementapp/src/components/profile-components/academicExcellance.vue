@@ -60,13 +60,23 @@ export default {
 
     methods: {
         update() {
-            var payload = {
-                "CG": this.userCG,
-                "BackLogs": this.userBackLogs,
-                "Marksheet": this.userMarkSheet
-            };
+            var payload = {};
+            
+            if(this.userCG) {
+                payload['current_cg'] = this.userCG;
+            }
+            
+            if(this.userBackLogs) {
+                payload['total_backlogs'] = this.userBackLogs;
+            }
+            
+            if(this.userMarkSheet) {
+                payload['cg_marksheet'] = this.userMarkSheet;
+            }
 
-            this.$store.dispatch('updateProfile', payload);
+            if(!(Object.keys(payload).length === 0 && payload.constructor === Object)) {
+                this.$store.dispatch('updateProfile', payload);
+            }
         }
     },
 

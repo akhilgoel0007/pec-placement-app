@@ -175,11 +175,11 @@
                 </div>
             </v-card-text>
             <v-card-actions class="px-12 pb-10">
-                <v-btn class="ma-2 white--text" color="success">
+                <v-btn @click="createOpening()" class="ma-2 white--text" color="success">
                     <v-icon class="mr-4 ml-2" dark>mdi-briefcase-plus</v-icon>
                     Create Opening
                 </v-btn>
-                <v-btn class="ma-2 white--text" color="error" @click="resetForm()">
+                <v-btn @click="resetForm()" class="ma-2 white--text" color="error">
                     <v-icon class="mr-2 ml-2" dark>mdi-cached</v-icon>
                     Reset Form
                 </v-btn>
@@ -227,6 +227,12 @@ export default {
             this.percentage10Required = null;
             this.percentage12Required = null;
             this.applicationCloseDate = null;
+        },
+
+        createOpening() {
+            var payload = {};
+            
+            this.$store.dispatch("CreateOpening", payload);
         }
     },
 

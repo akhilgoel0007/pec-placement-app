@@ -36,11 +36,6 @@
 import { mapGetters } from 'vuex';
 
 export default {
-    props: {
-        github: {type: String },
-        linkedIn: { type: String },
-    },
-
     data() {
         return {
             userGithub: null,
@@ -50,12 +45,19 @@ export default {
 
     methods: {
         update() {
-            var payload = {
-                'Github': this.userGithub,
-                'LinkedIn': this.userLinkedIn
-            };
+            var payload = {};
+            
+            if(this.userGithub) {
+                payload['github_url'] = this.userGithub;
+            }
+            
+            if(this.userLinkedIn) {
+                payload['linkedin_url'] = this.userLinkedIn;
+            }
 
-            this.$store.dispatch('updateProfile', payload);
+            if(!(Object.keys(payload).length === 0 && payload.constructor === Object)) {
+                this.$store.dispatch('updateProfile', payload);
+            }
         }
     },
 

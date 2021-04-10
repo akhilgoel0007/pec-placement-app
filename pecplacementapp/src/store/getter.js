@@ -26,10 +26,6 @@ export const getBranchOptions = (state) => {
     return state.branchOptions;
 }
 
-export const getDurationOptions = (state) => {
-    return state.durationOptions;
-}
-
 export const getGender = (state) => {
     return state.gender;
 }
@@ -99,9 +95,9 @@ export const getCG = (state) => {
 }
 
 export const getBacklogs = (state) => {
-    state.backLogs;
+    return state.backLogs;
 }
 
 export const getMarksheet = (state) => {
-    state.marksheet;
+    return state.marksheet;
 }

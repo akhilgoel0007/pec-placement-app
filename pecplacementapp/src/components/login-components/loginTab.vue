@@ -29,12 +29,12 @@ export default {
     
     methods: {
         Login() {
-            var Payload = {
+            var payload = {
                 email: this.email,
                 password: this.password
             };
 
-            this.$store.dispatch('LoginUser', Payload);
+            this.$store.dispatch('LoginUser', payload);
         }
     },
 

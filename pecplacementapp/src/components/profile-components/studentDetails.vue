@@ -64,14 +64,27 @@ export default {
 
     methods: {
         update() {
-            var payload = {
-                'SID': this.userSID,
-                'Batch': this.userBatch,
-                'Branch': this.userBranch,
-                'Semester': this.userSemester
-            };
-            
-            this.$store.dispatch('updateProfile', payload);
+            var payload = {};
+
+            if(this.userSID) {
+                payload['student_id'] = this.userSID;
+            }
+
+            if(this.userBatch) {
+                payload['batch'] = this.userBatch;
+            }
+
+            if(this.userBranch) {
+                payload['branch'] = this.userBranch;
+            }
+
+            if(this.userSemester) {
+                payload['semester'] = this.userSemester;
+            }
+
+             if(!(Object.keys(payload).length === 0 && payload.constructor === Object)) {
+                this.$store.dispatch('updateProfile', payload);
+            }
         }
     },
 

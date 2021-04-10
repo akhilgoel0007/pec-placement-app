@@ -34,7 +34,7 @@
                     </v-col>
                     <v-col cols="10">
                         <v-card-subtitle v-if="gender !== null">{{ gender }}</v-card-subtitle>
-                        <v-radio-group v-model="userGender" row>
+                        <v-radio-group v-else v-model="userGender" row>
                             <v-radio label="Male" value="male"></v-radio>
                             <v-radio label="Female" value="female"></v-radio>
                         </v-radio-group>
@@ -65,12 +65,19 @@ export default {
 
     methods: {
         update() {
-            var payload = {
-                'Gender': this.userGender,
-                'DateOfBirth': this.userDOB
-            };
+            var payload = {}
 
-            this.$store.dispatch('updateProfile', payload);
+            if(this.userGender) {
+                payload['gender'] = this.userGender;
+            }
+
+            if(this.userDOB) {
+                payload['date_of_birth'] = this.UserDOB;
+            }
+            
+            if(!(Object.keys(payload).length === 0 && payload.constructor === Object)) {
+                this.$store.dispatch('updateProfile', payload);
+            }
         }
     },
 

@@ -36,3 +36,86 @@ export const LOGIN = (state, Data) => {
     state.percentage12 = Data['user']['percentage_12'];
     state.contactNumber = Data['user']['phone_number'];
 }
+
+export const UPDATE_PROFILE = (state, Data) => {
+    if("current_cg" in Data) {
+        state.cg = Data["current_cg"];
+    }
+
+    if("batch" in Data) {
+        state.batch = Data["batch"];
+    }
+
+    if("branch" in Data) {
+        state.branch = Data["branch"];
+    }
+
+    if("student_id" in Data) {
+        state.studentID = Data["student_id"];
+    }
+
+    if("gender" in Data) {
+        state.gender = Data["gender"];
+    }
+
+    if("github_url" in Data) {
+        state.github = Data["github_url"];
+    }
+
+    if("linkedin_url" in Data) {
+        state.linkedIn = Data["linkedin_url"];
+    }
+
+    if("resume" in Data) {
+        state.resume = Data["resume"];
+    }
+
+    if("address" in Data) {
+        state.address = Data["address"];
+    }
+
+    if("total_backlogs" in Data) {
+        state.backLogs = Data["total_backlogs"];
+    }
+
+    if("semester" in Data) {
+        state.semester = Data["semester"];
+    }
+
+    if("phone_number" in Data) {
+        state.contactNumber = Data["phone_number"];
+    }
+
+    if("date_of_birth" in Data) {
+        state.dateOfBirth = Data["date_of_birth"];
+    }
+
+    if("cg_marksheet" in Data) {
+        state.marksheet = Data["cg_marksheet"];
+    }
+
+    if("school_name_10" in Data) {
+        state.schoolName10 = Data["school_name_10"];
+    }
+
+    if("percentage_10" in Data) {
+        state.percentage10 = Data["percentage_10"];
+    }
+
+    if("marksheet_10" in Data) {
+        state.marksheet10 = Data["marksheet_10"];
+    }
+
+    if("school_name_12" in Data) {
+        state.schoolName12 = Data["school_name_12"];
+    }
+
+    if("percentage_12" in Data) {
+        state.percentage12 = Data["percentage_12"];
+    }
+
+    if("marksheet_12" in Data) {
+        state.marksheet12 = Data["marksheet_12"];
+    }
+
+}

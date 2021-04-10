@@ -2,10 +2,11 @@ import axios from 'axios';
 import router from '../router/index';
 
 export const LoginUser = ({ commit }, payload) => {
-    axios.get("http://localhost:5000/user", payload)
+    
+    axios.get("http://localhost:5000/user", {params: payload})
     .then(Response => {
         if(Response.status === 200) {
-            commit("LOGIN", payload);
+            commit("LOGIN", Response.data);
             router.push('dashboard');
         }
     })
@@ -27,8 +28,10 @@ export const SignUpUser = ({ commit }, payload) => {
     })
 }
 
-export const updateProfile = ({ commit }, payload) => {
-    axios.patch("", payload)
+export const updateProfile = ({ commit, getters }, payload) => {
+    payload['email'] = getters.getEmail;
+
+    axios.patch("http://localhost:5000/user/update", payload)
     .then(Response => {
         if(Response.status === 202) {
             commit("UPDATE_PROFILE", payload);

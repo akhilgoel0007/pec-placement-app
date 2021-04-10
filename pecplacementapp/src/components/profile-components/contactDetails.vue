@@ -48,12 +48,19 @@ export default {
 
     methods: {
         update() {
-            var payload = {
-                'ContactNumber': this.userContactNumber,
-                'Address': this.userAddress
-            };
+            var payload = {};
 
-            console.log(payload);
+            if(this.userContactNumber) {
+                payload['phone_number'] = this.userContactNumber;
+            }
+            
+            if(this.userAddress) {
+                payload['address'] = this.userAddress;
+            }
+            
+            if(!(Object.keys(payload).length === 0 && payload.constructor === Object)) {
+                this.$store.dispatch('updateProfile', payload);
+            }
         }
     },
 

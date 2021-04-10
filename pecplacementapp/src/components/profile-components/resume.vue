@@ -42,11 +42,15 @@ export default {
 
     methods: {
         update() {
-            var payload = {
-                "resume": this.userResume
-            };
+            var payload = {};
 
-            this.$store.dispatch('updateProfile', payload);
+            if(this.resume) {
+                payload['resume'] = this.resume;
+            }
+
+            if(!(Object.keys(payload).length === 0 && payload.constructor === Object)) {
+                this.$store.dispatch('updateProfile', payload);
+            }
         }
     },
 

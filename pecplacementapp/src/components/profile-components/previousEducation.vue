@@ -119,16 +119,35 @@ export default {
 
     methods: {
         update() {
-            var payload = {
-                'school_name_10': this.userSchoolName10,
-                'percentage_10': this.userPercentage10,
-                'marksheet_10': this.userMarksheet10,
-                'school_name_12': this.userSchoolName12,
-                'percentage_12': this.userPercentage12,
-                'marksheet_12': this.userMarksheet12,
-            };
+            var payload = {};
+
+            if(this.userSchoolName10) {
+                payload['school_name_10'] = this.userSchoolName10;
+            }
+
+            if(this.userPercentage10) {
+                payload['percentage_10'] = this.userPercentage10;
+            }
+
+            if(this.userMarksheet10) {
+                payload['marksheet_10'] = this.userMarksheet10;
+            }
+
+            if(this.userSchoolName12) {
+                payload['school_name_12'] = this.userSchoolName12;
+            }
+
+            if(this.userPercentage12) {
+                payload['percentage_12'] = this.userPercentage12;
+            }
+
+            if(this.userMarksheet12) {
+                payload['marksheet_12'] = this.userMarksheet12;
+            }
             
-            this.$store.dispatch('updateProfile', payload);
+            if(!(Object.keys(payload).length === 0 && payload.constructor === Object)) {
+                this.$store.dispatch('updateProfile', payload);
+            }
         }
     },
 
