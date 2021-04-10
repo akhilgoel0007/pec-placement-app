@@ -16,7 +16,7 @@ api = API(app)
 
 def create_tables():
     User(None, None, None, None, None, None).create_table()
-    Company(None, None, None, None, None, None, None, None, None, None, None).create_table()
+    Company(None, None, None, None, None, None, None, None, None).create_table()
     UserCompany(None, None, None).create_table()
 
 

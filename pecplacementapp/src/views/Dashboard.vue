@@ -12,7 +12,7 @@
                         MY PROFILE
                     </router-link>
                 </span>
-                <span class="mx-4 mt-1 mb-1">
+                <span v-if="isAdmin" class="mx-4 mt-1 mb-1">
                     <router-link to="/jobentry" class="white--text" style="text-decoration: none;">
                         NEW OPENING
                     </router-link>
@@ -31,6 +31,13 @@
                         <v-list-item-title>
                             <router-link to="/account" class="black--text" style="text-decoration: none;">
                                 My Account
+                            </router-link>
+                        </v-list-item-title>
+                    </v-list-item>
+                    <v-list-item v-if="isAdmin">
+                        <v-list-item-title>
+                            <router-link to="/studentprofiles" class="black--text" style="text-decoration: none;">
+                                All Students
                             </router-link>
                         </v-list-item-title>
                     </v-list-item>
@@ -63,6 +70,7 @@ export default {
 
     computed: {
         ...mapGetters({
+            isAdmin: "getAdmin",
             lastName: "getLastName",
             firstName: "getFirstName"
         })

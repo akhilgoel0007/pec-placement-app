@@ -7,7 +7,7 @@
         </div>
         <div class="auth-wrapper display-flex centerY centerX">
             <v-card style="width: 50%; opacity: 0.97">
-                <v-card-title class="text-center justify-center py-6">PEC Placement App</v-card-title>
+                <v-card-title class="text-center justify-center py-6">JOBBOOK</v-card-title>
                 <v-tabs v-model="tab" center-active centered>
                     <v-tab>Login</v-tab>
                     <v-tab>Register</v-tab>

@@ -22,6 +22,10 @@ export const getSemesterOptions = (state) => {
     return state.semesterOptions;
 }
 
+export const getAdmin = (state) => {
+    return state.admin;
+}
+
 export const getBranchOptions = (state) => {
     return state.branchOptions;
 }
@@ -108,4 +112,16 @@ export const getAllJobOpenings = (state) => {
 
 export const getCurrentJobOpening = (state) => {
     return state.currentJobOpening;
+}
+
+export const getAppliedStatus = (state) => {
+    return state.applied;
+}
+
+export const getAllStudents = (state) => {
+    return state.allStudents;
+}
+
+export const getAllApplicants = (state) => {
+    return state.allApplicants;
 }

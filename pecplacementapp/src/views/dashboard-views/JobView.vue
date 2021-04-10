@@ -20,11 +20,11 @@
                     <div class="category-heading">Category</div>
                     <div class="category-content">{{ jobOpening.offer_type }}</div>
                 </div>
-                <div class="compensation display-flex flex-row">
+                <div v-if="jobOpening.stipend" class="compensation display-flex flex-row">
                     <div class="compensation-heading">Stipend</div>
                     <div class="compensation-content">{{ jobOpening.stipend }}</div>
                 </div>
-                <div class="compensation display-flex flex-row">
+                <div v-if="jobOpening.ctc" class="compensation display-flex flex-row">
                     <div class="compensation-heading">CTC</div>
                     <div class="compensation-content">{{ jobOpening.ctc }}</div>
                 </div>
@@ -41,32 +41,44 @@
                 <v-card-text>
                     <div class="criteria display-flex flex-row">
                         <div class="criteria-head">Backlog</div>
-                        <div class="criteria-content">Backlogs Allowed</div>
-                        <div class="criteria-status">No backlogs</div>
+                        <div v-if="jobOpening.max_backlogs" class="criteria-content">Maximum Backlogs Allowed: {{ jobOpening.max_backlogs }}</div>
+                        <div v-else class="criteria-content">No Backlogs Allowed</div>
+                        <div class="criteria-status">Backlogs: {{ backLogs }}</div>
                     </div>
-                    <div class="criteria display-flex flex-row">
-                        <div class="criteria-head">Course Eligibility</div>
-                        <div class="criteria-content">Some Criteria</div>
-                        <div class="criteria-status">Criteria satisfied</div>
-                    </div>
-                    <div class="criteria display-flex flex-row">
+                    <div v-if="jobOpening.min_cg" class="criteria display-flex flex-row">
                         <div class="criteria-head">Academic Eligibility</div>
-                        <div class="criteria-content">Some Criteria</div>
-                        <div class="criteria-status">UG - Required: 59.5% , Actual: 84.6%</div>
+                        <div class="criteria-content">Minimum Required CG: {{ jobOpening.min_cg }}</div>
+                        <div class="criteria-status">CG: {{ minCG }}</div>
+                    </div>
+                    <div v-if="jobOpening.min_10_percentage" class="criteria display-flex flex-row">
+                        <div class="criteria-head">Academic Eligibility</div>
+                        <div class="criteria-content">Minimum 10th Percenatge: {{ jobOpening.min_10_percentage }}</div>
+                        <div class="criteria-status">{{ percentage10 }}</div>
+                    </div>
+                    <div v-if="jobOpening.min_12_percentage" class="criteria display-flex flex-row">
+                        <div class="criteria-head">Academic Eligibility</div>
+                        <div class="criteria-content">Minimum 12th Percenatge: {{ jobOpening.min_12_percentage }}</div>
+                        <div class="criteria-status">{{ percentage12 }}</div>
                     </div>
                 </v-card-text>
                 <v-card-actions class="mt-10 pb-10 display-flex centerX centerY">
-                    <v-btn x-large @click="Login()" rounded :disabled="checkEligibility" color="success" class="white--text" style="width: 150px;">
+                    <v-btn v-if="isAdmin" x-large @click="showAllApplications()" rounded color="primary" class="white--text">
                         <v-icon class="mr-2 ml-2" dark>mdi-text-box-plus</v-icon>
-                        Apply
+                        Show All Applications
+                    </v-btn>
+                    <v-btn x-large @click="applyForJob()" rounded :disabled="checkEligibility" color="success" class="white--text" style="width: 150px;">
+                        <v-icon class="mr-2 ml-2" dark>mdi-text-box-plus</v-icon>
+                        <span v-if="appliedStatus">Applied</span>
+                        <span v-else>Apply</span>
                     </v-btn>
                 </v-card-actions>
             </v-card>
         </div>
     </div>
 </template>
+
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
 export default {
     name: "jobView",
@@ -77,23 +89,68 @@ export default {
     },
 
     methods: {
-        
+        applyForJob() {
+            var payload = {
+                "user_email": this.email,
+                "company_id": this.jobOpening.id
+            }
+            
+            this.$store.dispatch("ApplyForJob", payload);
+        },
+
+        showAllApplications() {
+            var payload = {
+                'company_id': this.jobOpening.id
+            }
+
+            this.$store.dispatch("ShowAllApplications", payload);
+        }
     },
 
     computed: {
         ...mapGetters({
-            jobOpening: "getCurrentJobOpening",
+            minCG: "getCG",
+            email: "getEmail",
+            isAdmin: "getAdmin",
+            backLogs: "getBacklogs",
+            percentage10: "getPercentage10",
+            percentage12: "getPercentage12",
+            appliedStatus: "getAppliedStatus",
+            jobOpening: "getCurrentJobOpening"
         }),
 
         checkEligibility() {
+            if(this.jobOpening.min_10_percentage) {
+                if(parseInt(this.jobOpening.min_10_percentage) > parseInt(this.percentage10)) {
+                    return true;
+                }
+            }
+
+            if(this.jobOpening.min_12_percentage) {
+                if(parseInt(this.jobOpening.min_12_percentage) > parseInt(this.percentage12)) {
+                    return true;
+                }
+            }
+
+            if(this.jobOpening.min_cg) {
+                if(parseFloat(this.jobOpening.min_cg) > parseFloat(this.minCG)) {
+                    return true;
+                }
+            }
+
+            if(this.jobOpening.max_backlogs) {
+                if(parseInt(this.jobOpening.max_backlogs) < parseInt(this.backLogs)) {
+                    return true;
+                }
+            } else {
+                if(this.backLogs !== 0) {
+                    return true;
+                }
+            }
+
             return false;
         }
     },
-
-    // mounted() {
-    //     this.$store.dispatch('ShowJobOpening', { id: this.id });
-    //     console.log(`Job id is: ${this.id}`);
-    // }
 }
 
 </script>

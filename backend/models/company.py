@@ -10,7 +10,7 @@ class Company:
         [+] Add company icon.
     """
     
-    def __init__(self, _id, profile_name, company_name, location, job_description, offer_type, stipend, ctc, duration, application_open_date, application_close_date, company_icon=None, min_cg=None, min_10_percentage=None, min_12_percentage=None, max_backlogs=None, is_active=None):
+    def __init__(self, _id, profile_name, company_name, location, job_description, offer_type, duration, application_open_date, application_close_date,  stipend=None, ctc=None, company_icon=None, min_cg=None, min_10_percentage=None, min_12_percentage=None, max_backlogs=None, is_active=None):
         self.id = _id
         self.ctc = ctc
         self.min_cg = min_cg
@@ -44,8 +44,8 @@ class Company:
                                "location TEXT NOT NULL," \
                                "job_description TEXT NOT NULL," \
                                "offer_type TEXT NOT NULL," \
-                               "stipend TEXT NOT NULL," \
-                               "ctc TEXT NOT NULL," \
+                               "stipend TEXT," \
+                               "ctc TEXT," \
                                "duration TEXT NOT NULL," \
                                "min_cg FLOAT," \
                                "min_10_percentage INT," \
@@ -92,8 +92,8 @@ class JobRegister(Resource):
     parser.add_argument("location", type=str, required=True, help="This field cannot be blank")
     parser.add_argument("job_description", type=str, required=True, help="This field cannot be blank")
     parser.add_argument("offer_type", type=str, required=True, help="This field cannot be blank")
-    parser.add_argument("stipend", type=str, required=True, help="This field cannot be blank")
-    parser.add_argument("ctc", type=str, required=True, help="This field cannot be blank")
+    parser.add_argument("stipend", type=str, required=False, help="This field cannot be blank")
+    parser.add_argument("ctc", type=str, required=False, help="This field cannot be blank")
     parser.add_argument("duration", type=str, required=True, help="This field cannot be blank")
     parser.add_argument("min_cg", type=float, required=False)
     parser.add_argument("min_10_percentage", type=int, required=False)
@@ -109,27 +109,35 @@ class JobRegister(Resource):
         connection = mysql.connect()
         cursor = connection.cursor()
 
-        company_icon = None
-        min_cg = None
-        min_10_percentage = None
-        min_12_percentage = None
-        max_backlogs = None
+        query_starting = f"INSERT INTO "
+        query_fields = f"company (profile_name, company_name, location, job_description, offer_type, duration, application_open_date, application_close_date"
+        query_fields_ending = f") "
+        query_values = f"VALUES ('{data['profile_name']}', '{data['company_name']}', '{data['location']}', '{data['job_description']}', '{data['offer_type']}', '{data['duration']}', '{data['application_open_date']}', '{data['application_close_date']}'"
+        query_values_ending = ")"
 
         if data['company_icon']:
-            company_icon = data['company_icon']
+            query_fields += ", company_icon"
+            query_values += f", '{data['company_icon']}'"
         if data['min_cg']:
-            min_cg = data['min_cg']
+            query_fields += ", min_cg"
+            query_values += f", {data['min_cg']}"
         if data['min_10_percentage']:
-            min_10_percentage = data['min_10_percentage']
+            query_fields += ", min_10_percentage"
+            query_values += f", {data['min_10_percentage']}"
         if data['min_12_percentage']:
-            min_12_percentage = data['min_12_percentage']
+            query_fields += ", min_12_percentage"
+            query_values += f", {data['min_12_percentage']}"
         if data['max_backlogs']:
-            max_backlogs = data['max_backlogs']
+            query_fields += ", max_backlogs"
+            query_values += f", {data['max_backlogs']}"
+        if data['stipend']:
+            query_fields += ", stipend"
+            query_values += f", '{data['stipend']}'"
+        if data['ctc']:
+            query_fields += ", ctc"
+            query_values += f", '{data['ctc']}'"
 
-        query = f"INSERT INTO " \
-                f"company (company_icon, profile_name, company_name, location, job_description, offer_type, stipend, ctc, duration, min_cg, min_10_percentage, min_12_percentage, max_backlogs, application_open_date, application_close_date) " \
-                f"VALUES ('{company_icon}', '{data['profile_name']}', '{data['company_name']}', '{data['location']}', '{data['job_description']}', '{data['offer_type']}', '{data['stipend']}', '{data['ctc']}', '{data['duration']}', {min_cg}, {min_10_percentage}, {min_12_percentage}, {max_backlogs}, '{data['application_open_date']}', '{data['application_close_date']}')"
-
+        query = query_starting + query_fields + query_fields_ending + query_values + query_values_ending
         cursor.execute(query)
 
         connection.commit()
@@ -267,7 +275,7 @@ class JobDataList(Resource):
 
     @staticmethod
     def get():
-        companies = Company(None, None, None, None, None, None, None, None, None, None, None).find_all_companies()
+        companies = Company(None, None, None, None, None, None, None, None, None).find_all_companies()
 
         all_companies = []
 

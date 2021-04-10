@@ -118,7 +118,39 @@ export const STORE_ALL_JOB_OPENINGS = (state, Data) => {
     state.jobOpenings = Data['all_job_opening'];
 }
 
+export const STORE_ALL_STUDENTS = (state, Data) => {
+    state.allStudents = Data['all_users'];
+}
+
 export const STORE_JOB_OPENING = (state, Data) => {
-    console.log(Data);
     state.currentJobOpening = Data['job_opening'];
+}
+
+export const STORE_STATUS = (state, Data) => {
+    if(Data["status"] === "applied") {
+        state.applied = true;
+    } else {
+        state.applied = false;
+    }
+}
+
+export const UPDATE_USER = (state, Data) => {
+    state.allStudents.forEach(student => {
+        if(student['email'] === Data['email']) {
+            student['is_active'] = Data['is_active']?1:0;
+        }
+    });
+}
+
+export const UPDATE_JOB = (state, Data) => {
+    console.log(Data);
+    state.jobOpenings.forEach(job => {
+        if(job['id'] === Data['id']) {
+            job['is_active'] = Data['is_active']?1:0;
+        }
+    });
+}
+
+export const STORE_ALL_APPLICANTS = (state, Data) => {
+    state.allApplicants = Data["all_applied_users"];
 }

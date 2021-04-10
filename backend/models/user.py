@@ -79,6 +79,16 @@ class User:
 
         return user_id if user_id else None
 
+    def find_by_email(self):
+        connection = mysql.connect()
+        cursor = connection.cursor()
+
+        cursor.execute(f"SELECT id FROM users WHERE email='{self.email}'")
+        result = cursor.fetchone()
+        connection.close()
+
+        return True if result else False
+
     def user_authentication(self):
         connection = mysql.connect()
         cursor = connection.cursor()
@@ -129,10 +139,17 @@ class UserRegister(Resource):
 
         connection = mysql.connect()
         cursor = connection.cursor()
+        user_found = User(None, None, None, data['email'], None).find_by_email()
 
-        cursor.execute(
-            f"INSERT INTO users (first_name,last_name,email,password) VALUES ('{data['first_name']}','{data['last_name']}','{data['email']}','{data['password']}')"
-        )
+        if not user_found:
+            cursor.execute(
+                f"INSERT INTO users (first_name,last_name,email,password) VALUES ('{data['first_name']}','{data['last_name']}','{data['email']}','{data['password']}')"
+            )
+        else:
+            connection.commit()
+            connection.close()
+            return {"message": "User already exsists!"}, 200
+
 
         connection.commit()
         connection.close()
@@ -193,7 +210,7 @@ class UserModification(Resource):
                 response = self.add_response(response, self.update(user_id, 'phone_number', data['phone_number']), "phone_number")
             if data['address']:
                 response = self.add_response(response, self.update(user_id, 'address', data['address']), "address")
-            if data['admin'] == False or data['is_active'] == True:
+            if data['admin'] == False or data['admin'] == True:
                 response = self.add_response(response, self.update(user_id, 'admin', data['admin']), "admin")
             if data['is_active'] == False or data['is_active'] == True:
                 response = self.add_response(response, self.update(user_id, 'is_active', data['is_active']), "is_active")

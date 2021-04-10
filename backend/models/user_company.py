@@ -126,13 +126,11 @@ class CompanyAppliedList(Resource):
         users = UserCompany(None, None, data['company_id']).find_all_applicants()
 
         all_users = []
-        for user in users:
-            all_users.append(UserData.json(User.find_by_id(user[1])))
+        if users:
+            for user in users:
+                all_users.append(UserData.json(User.find_by_id(user[1])))
 
-        if all_users:
-            return {"all_applied_users": all_users}, 200
-        else:
-            return {"message": "No user was found!"}, 404
+        return {"all_applied_users": all_users}, 200
 
 
 class CheckUserApplicationsStatus(Resource):

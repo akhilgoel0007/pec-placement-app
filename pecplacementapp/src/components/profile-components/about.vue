@@ -72,9 +72,9 @@ export default {
             }
 
             if(this.userDOB) {
-                payload['date_of_birth'] = this.UserDOB;
+                payload['date_of_birth'] = this.userDOB;
             }
-            
+
             if(!(Object.keys(payload).length === 0 && payload.constructor === Object)) {
                 this.$store.dispatch('updateProfile', payload);
             }

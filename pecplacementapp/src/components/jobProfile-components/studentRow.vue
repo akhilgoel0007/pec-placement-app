@@ -1,21 +1,24 @@
 <template>
-    <div class="content display-flex flex-row" >
+    <div class="content display-flex flex-row">
         <div class="display-flex centerX centerY company-icon pt-4 pb-4" style="width: 7%;">
             <v-avatar size="40" color="#E0E0E0">
                 <v-icon>mdi-account</v-icon>
             </v-avatar>
         </div>
-        <div @click="showJobOpening()" class="display-flex centerY profile-name" style="width: 33%;">
-            {{ profileName }}
+        <div class="display-flex centerY profile-name" style="width: 23%;">
+            {{ firstName }} {{ lastName }}
         </div>
-        <div class="display-flex centerY company-name" style="width: 30%;;">
-            {{ companyName }}
+        <div class="display-flex centerY company-name" style="width: 20%;;">
+            {{ studentID }}
         </div>
         <div class="display-flex centerY location" style="width: 20%;">
-            {{ location }}
+            {{ studentEmail }}
         </div>
-        <div @click="toggleActiveState()" class="display-flex centerX centerY status" style="width: 10%;">
-            <v-avatar v-if="status" size="40" color="#CCFF90">
+        <div class="display-flex centerY location" style="width: 20%;">
+            {{ studentSemester }}
+        </div>
+        <div class="display-flex centerX centerY status" style="width: 10%;" @click="toggleActiveState()">
+            <v-avatar v-if="isActive === 1" size="40" color="#CCFF90">
                 <v-icon color="#00C853" size="20">mdi-lock-open</v-icon>
             </v-avatar>
             <v-avatar v-else size="40" color="#E0E0E0">
@@ -30,41 +33,29 @@ import { mapGetters } from 'vuex';
 
 export default {
     props: {
-        jobID: { type: Number },
-        location: { type: String },
-        profileName: { type: String },
-        companyName: { type: String },
-        status: { type: Number },
-        companyIcon: { type: String, default: null },
+        firstName: { type: String },
+        lastName: { type: String },
+        studentEmail: { type: String },
+        studentSemester: { type: String },
+        studentID: { type: String },
+        isActive: { type: Number },
     },
 
     methods: {
         toggleActiveState() {
             if(this.isAdmin) {
-                var active = (this.status == 1)?true:false;
+                var active = (this.isActive == 1)?true:false;
 
                 var payload = {
-                    "id": this.jobID,
+                    "email": this.studentEmail,
                     "is_active": !active
                 }
 
-                this.$store.dispatch("ToggleJobActiveState", payload);    
-            }
-        },
-
-        showJobOpening() {
-            if(this.isAdmin || (this.status == 1)) {
-                var payload = {
-                    id: this.jobID
-                };
-                
-                this.$store.dispatch('ShowJobOpening', payload);
-            } else {
-                alert("This opening is not accepting application any more.");
+                this.$store.dispatch("ToggleActiveState", payload);    
             }
         }
     },
-    
+
     computed: {
         ...mapGetters({
             isAdmin: "getAdmin",

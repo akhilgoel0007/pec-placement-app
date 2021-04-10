@@ -1,6 +1,4 @@
 <template>
-    <!-- Add Routes in Job Rows to their specific openings.-->
-
     <div class="pt-10 pb-10" style="margin: 0px 80px;">
         <v-card tile min-height="550">
             <div class="profiles-listing display-flex flex-column pa-6">
@@ -21,7 +19,7 @@
                         :profileName="job.profile_name"
                         :companyName="job.company_name"
                         :location="job.location"
-                        :status="job.status"
+                        :status="job.is_active"
                     />
                 </div>
             </div>

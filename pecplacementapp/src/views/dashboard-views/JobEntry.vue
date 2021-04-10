@@ -1,8 +1,5 @@
 <template>
     <!-- Change the Job Description Editor using ToastUI -->
-    <!-- Add Job Functions -->
-    <!-- Add Backlogs Allowed -->
-    <!-- Add Allowed Branches -->
     
     <div class="pt-12 pb-12" style="margin: 0px 150px;">
         <v-card tile min-height="300">
@@ -28,6 +25,16 @@
                     </div>
                     <div class="input-content">
                         <v-text-field v-model="companyName" label="Company Name"></v-text-field>
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div class="input-field-wrapper display-flex flex-row">
+                    <div class="input-heading display-flex centerY">
+                        Job Location:
+                    </div>
+                    <div class="input-content">
+                        <v-text-field v-model="location" label="Job Location"></v-text-field>
                     </div>
                 </div>
 
@@ -172,7 +179,7 @@
                                     Maximum Backlogs:
                                 </div>
                                 <div class="criteria-input-content">
-                                    <v-text-field v-model="maxBacklogs" label="Minimum Required CG"></v-text-field>
+                                    <v-text-field v-model="maxBacklogs" label="Maximum Backlogs Allowed"></v-text-field>
                                 </div>
                             </div>
                         </div>
@@ -233,6 +240,7 @@ export default {
             minCG: null,
             stipend: null,
             duration: null,
+            location: null,
             cgRequired: null,
             profileName: null,
             companyName: null,
@@ -255,6 +263,7 @@ export default {
             this.minCG = null;
             this.stipend = null;
             this.duration = null;
+            this.location = null;
             this.cgRequired = null;
             this.profileName = null;
             this.companyName = null;
@@ -271,8 +280,43 @@ export default {
         },
 
         createOpening() {
-            var payload = {};
+            var payload = {
+                location: this.location,
+                profile_name: this.profileName,
+                company_name: this.companyName,
+                offer_type: this.classification,
+                job_description: this.jobDescription,
+                application_open_date: this.applicationOpenDate,
+                application_close_date: this.applicationCloseDate
+            };
+
+            if(this.cgRequired === 'true') {
+                payload['min_cg'] = this.minCG;
+            }
+
+            if(this.backlogAllowed === 'true') {
+                payload['max_backlogs'] = this.maxBacklogs;
+            }
+
+            if(this.percentage12Required === 'true') {
+                payload['min_12_percentage'] = this.min12Percentage;
+            }
+
+            if(this.percentage10Required === 'true') {
+                payload['min_10_percentage'] = this.min10Percentage;
+            }
             
+            if(this.classification === "Internship") {
+                payload['duration'] = this.duration;
+                payload['stipend'] = this.stipend;
+                if(this.ctc) {
+                    payload['ctc'] = this.ctc;
+                }
+            } else if(this.classification === "FullTime") {
+                payload['duration'] = "full_time";
+                payload['ctc'] = this.ctc;
+            }
+
             this.$store.dispatch("CreateOpening", payload);
         },
 
@@ -297,7 +341,7 @@ export default {
         }),
 
         allowToCreateOpening() {
-            if(this.profileName && this.companyName && this.jobDescription && this.applicationCloseDate && this.applicationOpenDate) {
+            if(this.profileName && this.companyName && this.jobDescription && this.applicationCloseDate && this.applicationOpenDate && this.location) {
                 if(this.classification === "Internship") {
                     if(this.stipend && this.duration) {
                         console.log( this.checkValue(this.backlogAllowed, this.maxBacklogs));

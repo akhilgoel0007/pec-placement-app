@@ -52,6 +52,9 @@ export default {
         "12 Months"
     ],
 
+    applied: null,
     jobOpenings: null,
+    allStudents: null,
+    allApplicants: null,
     currentJobOpening: null,
 }
