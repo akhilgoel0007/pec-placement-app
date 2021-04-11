@@ -224,8 +224,9 @@ class UserModification(Resource):
                 response = self.add_response(response, self.update(user_id, 'semester', data['semester']), "semester")
             if data['current_cg']:
                 response = self.add_response(response, self.update(user_id, 'current_cg', data['current_cg']), "current_cg")
-            if data['total_backlogs']:
-                response = self.add_response(response, self.update(user_id, 'total_backlogs', data['total_backlogs']), "total_backlogs")
+            if data['total_backlogs'] != None:
+                if data['total_backlogs'] >= 0:
+                    response = self.add_response(response, self.update(user_id, 'total_backlogs', data['total_backlogs']), "total_backlogs")
             if data['cg_marksheet']:
                 response = self.add_response(response, self.update(user_id, 'cg_marksheet', data['cg_marksheet']), "cg_marksheet")
             if data['school_name_12']:

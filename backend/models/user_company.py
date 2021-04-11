@@ -106,13 +106,11 @@ class UserApplicationsList(Resource):
         companies = UserCompany(None, user_id, None).find_all_applied_companies()
 
         all_companies = []
-        for company in companies:
-            all_companies.append(JobData.json(Company.find_by_id(company[2])))
+        if companies:
+            for company in companies:
+                all_companies.append(JobData.json(Company.find_by_id(company[2])))
 
-        if all_companies:
-            return {"all_applications": all_companies}, 200
-        else:
-            return {"message": "No job opening was found!"}, 404
+        return {"all_applications": all_companies}, 200
 
 
 class CompanyAppliedList(Resource):
