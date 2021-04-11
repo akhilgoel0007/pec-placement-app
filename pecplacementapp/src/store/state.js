@@ -56,5 +56,6 @@ export default {
     jobOpenings: null,
     allStudents: null,
     allApplicants: null,
+    myApplications: null,
     currentJobOpening: null,
 }

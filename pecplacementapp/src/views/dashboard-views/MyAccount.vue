@@ -1,8 +1,4 @@
- <template>
-    <!-- Add Functionality of changing number and password -->
-    <!-- Add if/else for image -->
-    <!-- Add if/else for student and admin -->
-    
+ <template>    
     <div class="pt-10 pb-10" style="margin: 0px 80px;">
         <v-card tile min-height="450">
             <div class="display-flex flex-row pt-8">
@@ -19,7 +15,10 @@
                             <span>{{firstName}} {{lastName}}</span>
                         </div>
                         <div class="display-flex centerX centerY mt-1">
-                            <div class="designation px-2">
+                            <div v-if="isAdmin" class="designation px-2">
+                                ADMIN
+                            </div>
+                            <div v-else class="designation px-2">
                                 STUDENT
                             </div>
                         </div>
@@ -32,7 +31,7 @@
                             <div class="display-flex flex-row mb-2">
                                 <div style="width: 20%;">Mobile</div>
                                 <div style="width: 40%; text-align: center;">{{ contactNumber }}</div>
-                                <div style="width: 40%; text-align: center;">Change Number</div>
+                                <!-- <div style="width: 40%; text-align: center;">Change Number</div> -->
                             </div>
                             <div class="display-flex flex-row">
                                 <div style="width: 20%;">Email</div>
@@ -44,8 +43,8 @@
                         <div class="display-flex mx-2 mb-6" style="border-bottom: 1px solid black; font-size: 20px; font-weight: bold;">Password</div>
                         <div class="display-flex flex-row ma-2">
                             <div style="width: 20%;">Password</div>
-                            <div style="width: 40%; text-align: center;">sadajsdnjakdn</div>
-                            <div style="width: 40%; text-align: center;">Change Password</div>
+                            <div style="width: 40%; text-align: center;">*************</div>
+                            <!-- <div style="width: 40%; text-align: center;">Change Password</div> -->
                         </div>
                     </div>
                 </div>
@@ -74,6 +73,7 @@ export default {
     computed: {
         ...mapGetters({
             email: "getEmail",
+            isAdmin: "getAdmin",
             lastName: "getLastName",
             firstName: "getFirstName",
             contactNumber: "getContactNumber"

@@ -154,3 +154,7 @@ export const UPDATE_JOB = (state, Data) => {
 export const STORE_ALL_APPLICANTS = (state, Data) => {
     state.allApplicants = Data["all_applied_users"];
 }
+
+export const STORE_MY_APPLICATIONS = (state, Data) => {
+    state.myApplications = Data["all_applications"];
+}

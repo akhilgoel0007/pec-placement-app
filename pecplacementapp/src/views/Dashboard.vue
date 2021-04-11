@@ -34,6 +34,11 @@
                             </router-link>
                         </v-list-item-title>
                     </v-list-item>
+                    <v-list-item @click="showMyApplications()">
+                        <v-list-item-title>
+                            My Applications
+                        </v-list-item-title>
+                    </v-list-item>
                     <v-list-item v-if="isAdmin">
                         <v-list-item-title>
                             <router-link to="/studentprofiles" class="black--text" style="text-decoration: none;">
@@ -65,11 +70,18 @@ export default {
     },
 
     methods: {
+        showMyApplications() {
+            var payload = {
+                "user_email": this.email
+            };
 
+            this.$store.dispatch("ShowMyApplications", payload);
+        }
     },
 
     computed: {
         ...mapGetters({
+            email: "getEmail",
             isAdmin: "getAdmin",
             lastName: "getLastName",
             firstName: "getFirstName"

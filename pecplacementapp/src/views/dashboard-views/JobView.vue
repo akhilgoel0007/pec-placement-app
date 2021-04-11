@@ -66,7 +66,7 @@
                         <v-icon class="mr-2 ml-2" dark>mdi-text-box-plus</v-icon>
                         Show All Applications
                     </v-btn>
-                    <v-btn x-large @click="applyForJob()" rounded :disabled="checkEligibility" color="success" class="white--text" style="width: 150px;">
+                    <v-btn x-large @click="applyForJob()" rounded :disabled="appliedStatus || checkEligibility" color="success" class="white--text" style="width: 150px;">
                         <v-icon class="mr-2 ml-2" dark>mdi-text-box-plus</v-icon>
                         <span v-if="appliedStatus">Applied</span>
                         <span v-else>Apply</span>

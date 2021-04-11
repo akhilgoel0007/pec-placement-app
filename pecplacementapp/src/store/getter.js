@@ -125,3 +125,7 @@ export const getAllStudents = (state) => {
 export const getAllApplicants = (state) => {
     return state.allApplicants;
 }
+
+export const getMyApplications = (state) => {
+    return state.myApplications;
+}

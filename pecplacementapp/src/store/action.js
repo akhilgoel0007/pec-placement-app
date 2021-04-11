@@ -160,3 +160,16 @@ export const ShowAllApplications = ({ commit }, payload) => {
         console.log(`All applicants error: ${error}`);
     })
 }
+
+export const ShowMyApplications = ({ commit }, payload) => {
+    axios.get("http://localhost:5000/userallapplications", {params: payload})
+    .then(Response => {
+        if(Response.status === 200) {
+            commit("STORE_MY_APPLICATIONS", Response.data);
+            router.push('myapplications');
+        }
+    })
+    .catch(error => {
+        console.log(`Show My Applications error: ${error}`);
+    })
+}
